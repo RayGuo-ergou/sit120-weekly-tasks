@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      {{ message }}
+      <component v-font-size="20"></component>
+    </div>
+  </body>
+</html>
+
+<script>
+  const component = {
+    template: '<div>This is component</div>',
+    name: 'component',
+  };
+
+  const myPlugin = {
+    install(Vue, options) {
+      Vue.component(component.name, component);
+      Vue.directive('font-size', {
+        bind(el, binding, vnode) {
+          el.style.fontSize = binding.value + 'px';
+        },
+      });
+      // there's more like mixin provide and inject, but I'm not using them here
+    },
+  };
+
+  /*
+   * Use the plugin globally
+   */
+  Vue.use(myPlugin);
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'Hello Vue!',
+    },
+  });
+</script>
